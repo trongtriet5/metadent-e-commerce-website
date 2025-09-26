@@ -1,0 +1,119 @@
+[
+  {
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+      "name": "Máy tăm nước Waterpik WP-660",
+      "description": "Máy tăm nước Waterpik WP-660 với công nghệ tiên tiến, giúp làm sạch kẽ răng hiệu quả. Có 10 mức áp lực khác nhau, bình chứa nước 600ml, dễ sử dụng và vệ sinh.",
+      "price": "1290000.00",
+      "image": "products/dentab.jpg",
+      "category": "water_flosser",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+      "name": "Máy tăm nước Philips Sonicare AirFloss",
+      "description": "Máy tăm nước Philips Sonicare AirFloss sử dụng công nghệ micro-droplet, làm sạch kẽ răng nhẹ nhàng mà hiệu quả. Thiết kế gọn nhẹ, pin sạc lâu dài.",
+      "price": "890000.00",
+      "image": "products/dentab.jpg",
+      "category": "water_flosser",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+      "name": "Máy tăm nước Panasonic EW-DJ10",
+      "description": "Máy tăm nước Panasonic EW-DJ10 với thiết kế đơn giản, dễ sử dụng. Có 2 mức áp lực, bình chứa nước 200ml, phù hợp cho gia đình.",
+      "price": "650000.00",
+      "image": "products/dentab.jpg",
+      "category": "water_flosser",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+      "name": "Bàn chải điện Oral-B Pro 1000",
+      "description": "Bàn chải điện Oral-B Pro 1000 với công nghệ 3D Cleaning Action, loại bỏ mảng bám hiệu quả hơn 300% so với bàn chải thường. Pin sạc 7 ngày.",
+      "price": "750000.00",
+      "image": "products/dentab.jpg",
+      "category": "electric_brush",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+      "name": "Bàn chải điện Philips Sonicare DiamondClean",
+      "description": "Bàn chải điện Philips Sonicare DiamondClean với công nghệ sonic, 31.000 dao động/phút. Có 5 chế độ làm sạch, pin sạc 3 tuần, thiết kế sang trọng.",
+      "price": "1890000.00",
+      "image": "products/dentab.jpg",
+      "category": "electric_brush",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+      "name": "Bàn chải điện Xiaomi Mi Electric Toothbrush",
+      "description": "Bàn chải điện Xiaomi Mi với thiết kế tối giản, công nghệ sonic 31.000 dao động/phút. Kết nối app thông minh, pin sạc 18 ngày, giá cả hợp lý.",
+      "price": "450000.00",
+      "image": "products/dentab.jpg",
+      "category": "electric_brush",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 7,
+    "fields": {
+      "name": "Nước súc miệng Listerine Total Care",
+      "description": "Nước súc miệng Listerine Total Care với công thức 6 tác dụng: chống sâu răng, làm chắc nướu, giảm mảng bám, chống hôi miệng, làm trắng răng, bảo vệ men răng.",
+      "price": "85000.00",
+      "image": "products/dentab.jpg",
+      "category": "mouthwash",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 8,
+    "fields": {
+      "name": "Nước súc miệng Colgate Plax",
+      "description": "Nước súc miệng Colgate Plax với công thức làm sạch sâu, loại bỏ vi khuẩn gây hôi miệng. Hương bạc hà tươi mát, không chứa cồn, an toàn cho cả gia đình.",
+      "price": "65000.00",
+      "image": "products/dentab.jpg",
+      "category": "mouthwash",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 9,
+    "fields": {
+      "name": "Nước súc miệng Sensodyne Daily Care",
+      "description": "Nước súc miệng Sensodyne Daily Care dành cho răng nhạy cảm. Công thức dịu nhẹ, giúp giảm ê buốt răng, bảo vệ men răng, không chứa cồn và chất tạo màu.",
+      "price": "95000.00",
+      "image": "products/dentab.jpg",
+      "category": "mouthwash",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]
