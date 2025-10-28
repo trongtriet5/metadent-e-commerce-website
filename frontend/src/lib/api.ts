@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Product, CartItem, Order } from '@/types';
+import { Product, Order } from '@/types';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 

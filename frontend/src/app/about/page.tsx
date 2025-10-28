@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Heart, Award, Users, Target } from 'lucide-react';
-import { cmsApi, getImageUrl } from '@/lib/cms';
+import { cmsApi, getImageUrl, PageImage } from '@/lib/cms';
 
 export default function AboutPage() {
   const [settings, setSettings] = useState<Record<string, string>>({});
-  const [pageImages, setPageImages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [pageImages, setPageImages] = useState<PageImage[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,8 +21,6 @@ export default function AboutPage() {
         setPageImages(images);
       } catch (error) {
         console.error('Error fetching CMS data:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -245,10 +243,11 @@ export default function AboutPage() {
             <div className="text-center space-y-4">
               <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto relative overflow-hidden">
                 {teamImages[0]?.image && (
-                  <img
+                  <Image
                     src={getImageUrl(teamImages[0].image)}
                     alt={settings.about_team_member_1_name || 'Member 1'}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 )}
               </div>
@@ -262,10 +261,11 @@ export default function AboutPage() {
             <div className="text-center space-y-4">
               <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto relative overflow-hidden">
                 {teamImages[1]?.image && (
-                  <img
+                  <Image
                     src={getImageUrl(teamImages[1].image)}
                     alt={settings.about_team_member_2_name || 'Member 2'}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 )}
               </div>
@@ -279,10 +279,11 @@ export default function AboutPage() {
             <div className="text-center space-y-4">
               <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto relative overflow-hidden">
                 {teamImages[2]?.image && (
-                  <img
+                  <Image
                     src={getImageUrl(teamImages[2].image)}
                     alt={settings.about_team_member_3_name || 'Member 3'}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 )}
               </div>
@@ -307,18 +308,18 @@ export default function AboutPage() {
             phù hợp nhất cho nhu cầu của bạn.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/products"
               className="bg-white text-[#0077B6] px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-colors duration-200"
             >
               Khám phá sản phẩm
-            </a>
-            <a
+            </Link>
+            <Link
               href="/contact"
               className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-[#0077B6] transition-colors duration-200"
             >
               Liên hệ với chúng tôi
-            </a>
+            </Link>
           </div>
         </div>
       </section>

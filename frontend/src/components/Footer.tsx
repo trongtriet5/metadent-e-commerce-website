@@ -5,12 +5,10 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaTiktok } from 'react-icons/fa';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { cmsApi, getImageUrl } from '@/lib/cms';
-import { SiteSetting } from '@/lib/cms';
+import { cmsApi } from '@/lib/cms';
 
 export default function Footer() {
   const [settings, setSettings] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -19,8 +17,6 @@ export default function Footer() {
         setSettings(settingsMap);
       } catch (error) {
         console.error('Error fetching settings:', error);
-      } finally {
-        setLoading(false);
       }
     };
 

@@ -51,7 +51,7 @@ export default function CMSImage({
 
   const imageUrl = image 
     ? getImageUrl(image.image) 
-    : fallback;
+    : fallback || '/placeholder.jpg';
 
   return (
     <div className={`relative ${className}`}>

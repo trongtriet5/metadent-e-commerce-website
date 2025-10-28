@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartStore, Product, CartItem } from '@/types';
+import { CartStore, Product } from '@/types';
 
 // Local cart item interface for frontend
 interface LocalCartItem {

@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product } from '@/types';
 import { productsApi } from '@/lib/api';
 import ProductCard from '@/components/ProductCard';
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   
@@ -127,5 +127,24 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0077B6] mx-auto mb-4"></div>
+              <p className="text-gray-600">Đang tải sản phẩm...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }

@@ -3028,3 +3028,6 @@ INFO 2025-10-28 11:05:32,023 basehttp 20104 25356 "GET /api/cms/settings/ HTTP/1
 INFO 2025-10-28 11:05:32,027 basehttp 20104 23104 "GET /media/page_images/bactung_rrkBWo4.png HTTP/1.1" 304 0
 INFO 2025-10-28 11:05:32,029 basehttp 20104 6412 "GET /media/page_images/bactung2.png HTTP/1.1" 304 0
 INFO 2025-10-28 11:05:32,029 basehttp 20104 9264 "GET /api/cms/settings/ HTTP/1.1" 200 7503
+INFO 2025-10-28 11:14:06,830 basehttp 20104 6532 "GET /api/cms/page-images/ HTTP/1.1" 200 1751
+INFO 2025-10-28 11:14:06,831 basehttp 20104 22720 "GET /api/cms/settings/ HTTP/1.1" 200 7503
+INFO 2025-10-28 11:14:25,584 basehttp 20104 22720 "GET /api/cms/settings/ HTTP/1.1" 200 7503

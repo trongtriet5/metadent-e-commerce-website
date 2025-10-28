@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { getImageUrl } from '@/lib/cms';
 import { PageImage } from '@/lib/cms';
@@ -96,10 +96,11 @@ export default function HorizontalHeroSlider({ images, settings }: HorizontalHer
                     index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
                   }`}
                 >
-                  <img
+                  <Image
                     src={getImageUrl(image.image)}
                     alt={image.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-contain bg-white/5"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.parentElement?.classList.add('bg-white/10');

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, X } from 'lucide-react';
-import { CartItem, Order } from '@/types';
-import { cartApi, orderApi } from '@/lib/api';
+import { CartItem } from '@/types';
+import { orderApi } from '@/lib/api';
 import { useCartStore } from '@/store/cartStore';
 import Swal from 'sweetalert2';
 import SkeletonImage from '@/components/SkeletonImage';
@@ -68,6 +68,7 @@ export default function CartPage() {
   useEffect(() => {
     fetchCartItems();
     loadProvinces();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Load provinces on component mount
