@@ -5,15 +5,53 @@ import Image from 'next/image';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/cartStore';
+import { cmsApi } from '@/lib/cms';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+  const [companyName, setCompanyName] = useState('Metadent');
+  const [logoUrl, setLogoUrl] = useState('http://localhost:8000/media/logo.jpg');
   const { getTotalItems, fetchItems } = useCartStore();
 
-  // Fetch cart items on component mount
+  // Fetch cart items and settings on component mount
   useEffect(() => {
     fetchItems();
+    setIsClient(true);
+
+    // Fetch company settings
+    const fetchSettings = async () => {
+      try {
+        const name = await cmsApi.getSiteSetting('company_name');
+        const logo = await cmsApi.getSiteSetting('logo_url');
+        if (name) setCompanyName(name);
+        if (logo) setLogoUrl(logo);
+      } catch (error) {
+        console.error('Error fetching company settings:', error);
+      }
+    };
+
+    fetchSettings();
   }, [fetchItems]);
+
+  // Update total items when cart changes
+  useEffect(() => {
+    if (isClient) {
+      setTotalItems(getTotalItems());
+    }
+  }, [getTotalItems, isClient]);
+
+  // Listen to cart store changes
+  useEffect(() => {
+    if (isClient) {
+      const unsubscribe = useCartStore.subscribe((state) => {
+        setTotalItems(state.items.reduce((total, item) => total + item.quantity, 0));
+      });
+      
+      return unsubscribe;
+    }
+  }, [isClient]);
 
   const menuItems = [
     { href: '/', label: 'Trang chủ' },
@@ -28,12 +66,13 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="relative w-10 h-10">
+            <div className="relative w-12 h-12 flex-shrink-0">
               <Image
-                src="http://localhost:8000/media/logo.jpg"
-                alt="Chuyên gia răng miệng"
+                src={logoUrl}
+                alt={companyName}
                 fill
-                className="object-cover rounded-full"
+                className="object-cover"
+                style={{ borderRadius: '50%' }}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -41,7 +80,7 @@ export default function Header() {
               />
             </div>
             <span className="text-xl font-bold text-[#0077B6]">
-              Metadent
+              {companyName}
             </span>
           </Link>
 
@@ -66,9 +105,9 @@ export default function Header() {
               className="relative p-2 text-gray-700 hover:text-[#0077B6] transition-colors duration-200"
             >
               <ShoppingCart size={24} />
-              {getTotalItems() > 0 && (
+              {isClient && totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-[#0077B6] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {getTotalItems()}
+                  {totalItems}
                 </span>
               )}
             </Link>

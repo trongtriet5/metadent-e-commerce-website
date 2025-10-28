@@ -7,6 +7,7 @@ class Product(models.Model):
         ('water_flosser', 'Máy tăm nước'),
         ('electric_brush', 'Bàn chải điện'),
         ('mouthwash', 'Nước súc miệng'),
+        ('other', 'Sản phẩm khác'),
     ]
     
     name = models.CharField(max_length=200, verbose_name="Tên sản phẩm")

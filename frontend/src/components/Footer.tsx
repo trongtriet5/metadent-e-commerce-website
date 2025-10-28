@@ -2,10 +2,41 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { FaFacebook, FaTiktok } from 'react-icons/fa';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { cmsApi, getImageUrl } from '@/lib/cms';
+import { SiteSetting } from '@/lib/cms';
 
 export default function Footer() {
+  const [settings, setSettings] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const settingsMap = await cmsApi.getAllSiteSettingsMap();
+        setSettings(settingsMap);
+      } catch (error) {
+        console.error('Error fetching settings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  // Get values with fallback
+  const companyName = settings.company_name || 'Chuyên gia răng miệng';
+  const companyDescription = settings.company_description || 'Chuyên cung cấp các sản phẩm chăm sóc răng miệng chất lượng cao, giúp bạn có nụ cười khỏe đẹp và tự tin.';
+  const address = settings.company_address || '19V Nguyễn Hữu Cảnh, Phường 19, Quận Bình Thạnh, TP.HCM';
+  const phone = settings.contact_phone || '(+84) 866 940 279';
+  const email = settings.contact_email || 'chuyengiarangmieng@gmail.com';
+  const facebookUrl = settings.facebook_url || 'https://www.facebook.com/chuyengiarangmiengcom';
+  const tiktokUrl = settings.tiktok_url || 'https://www.tiktok.com/@chuyengiarangnieng';
+  const logoUrl = settings.logo_url || 'http://localhost:8000/media/logo.jpg';
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -13,31 +44,35 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="relative w-10 h-10">
+              <div className="relative w-10 h-10 flex-shrink-0">
                 <Image
-                  src="http://localhost:8000/media/logo.jpg"
-                  alt="Chuyên gia răng miệng"
+                  src={logoUrl}
+                  alt={companyName}
                   fill
                   className="object-cover rounded-full"
+                  style={{ borderRadius: '50%' }}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
                   }}
                 />
               </div>
-              <span className="text-xl font-bold">Chuyên gia răng miệng</span>
+              <span className="text-xl font-bold">{companyName}</span>
             </div>
             <p className="text-gray-300 text-sm">
-              Chuyên cung cấp các sản phẩm chăm sóc răng miệng chất lượng cao, 
-              giúp bạn có nụ cười khỏe đẹp và tự tin.
+              {companyDescription}
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com/chuyengiarangmiengcom" className="text-gray-400 hover:text-[#0077B6] transition-colors">
-                <FaFacebook size={20} />
-              </a>
-              <a href="https://www.tiktok.com/@chuyengiarangnieng" className="text-gray-400 hover:text-[#0077B6] transition-colors">
-                <FaTiktok size={20} />
-              </a>
+              {facebookUrl && (
+                <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#0077B6] transition-colors">
+                  <FaFacebook size={20} />
+                </a>
+              )}
+              {tiktokUrl && (
+                <a href={tiktokUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#0077B6] transition-colors">
+                  <FaTiktok size={20} />
+                </a>
+              )}
             </div>
           </div>
 
@@ -97,20 +132,20 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <MapPin size={16} className="text-[#0077B6]" />
                 <span className="text-gray-300 text-sm">
-                  19V Nguyễn Hữu Cảnh, Phường 19, Quận Bình Thạnh, TP.HCM
+                  {address}
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={16} className="text-[#0077B6]" />
-                <span className="text-gray-300 text-sm">
-                  (+84) 866 940 279
-                </span>
+                <a href={`tel:${phone.replace(/[^0-9+]/g, '')}`} className="text-gray-300 text-sm hover:text-[#0077B6] transition-colors">
+                  {phone}
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={16} className="text-[#0077B6]" />
-                <span className="text-gray-300 text-sm">
-                  chuyengiarangmieng@gmail.com
-                </span>
+                <a href={`mailto:${email}`} className="text-gray-300 text-sm hover:text-[#0077B6] transition-colors">
+                  {email}
+                </a>
               </div>
             </div>
           </div>
@@ -118,7 +153,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © 2025 Chuyên gia răng miệng. Tất cả quyền được bảo lưu.
+            © {new Date().getFullYear()} {companyName}. Tất cả quyền được bảo lưu.
           </p>
         </div>
       </div>

@@ -3,6 +3,12 @@
 import os
 import sys
 
+# Fix Unicode encoding on Windows
+if sys.platform == 'win32':
+    import codecs
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+
 
 def main():
     """Run administrative tasks."""

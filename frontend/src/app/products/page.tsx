@@ -19,6 +19,7 @@ export default function ProductsPage() {
     { value: 'water_flosser', label: 'Máy tăm nước' },
     { value: 'electric_brush', label: 'Bàn chải điện' },
     { value: 'mouthwash', label: 'Nước súc miệng' },
+    { value: 'other', label: 'Sản phẩm khác' },
   ];
 
   useEffect(() => {

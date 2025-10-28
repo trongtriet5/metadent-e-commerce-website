@@ -1,10 +1,14 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics
 from django.db import transaction
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
 from products.models import Product
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
@@ -73,4 +77,27 @@ def create_order(request):
         
     except Exception as e:
         return Response({'error': f'Lỗi tạo đơn hàng: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class OrderListAPIView(generics.ListAPIView):
+    """
+    List all orders for admin
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        queryset = Order.objects.all()
+        status_filter = self.request.query_params.get('status', None)
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        return queryset.select_related()
+
+
+class OrderDetailAPIView(generics.RetrieveUpdateAPIView):
+    """
+    Retrieve and update order status
+    """
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
 

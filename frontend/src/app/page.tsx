@@ -6,99 +6,121 @@ import Link from 'next/link';
 import { ArrowRight, Star, Shield, Truck } from 'lucide-react';
 import { Product } from '@/types';
 import { productsApi } from '@/lib/api';
+import { cmsApi, getImageUrl, PageImage } from '@/lib/cms';
 import ProductCard from '@/components/ProductCard';
+import HorizontalHeroSlider from '@/components/HeroSlider';
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [pageImages, setPageImages] = useState<PageImage[]>([]);
+  const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchFeaturedProducts = async () => {
+    const fetchData = async () => {
       try {
-        const products = await productsApi.getAll();
-        // Lấy 6 sản phẩm đầu tiên làm sản phẩm nổi bật
+        const [products, images, settingsMap] = await Promise.all([
+          productsApi.getAll(),
+          cmsApi.getPageImages(),
+          cmsApi.getAllSiteSettingsMap()
+        ]);
+        
         setFeaturedProducts(products.slice(0, 6));
+        setPageImages(images);
+        setSettings(settingsMap);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFeaturedProducts();
+    fetchData();
   }, []);
+
+  // Get hero images from CMS for slider
+  const heroImages = pageImages.filter(img => img.position === 'hero' && img.is_active);
+  
+  // Get category banners with new position names
+  const tamnuocBanner = pageImages.find(img => img.position === 'tamnuoc_banner' && img.is_active);
+  const banchaidienBanner = pageImages.find(img => img.position === 'banchaidien_banner' && img.is_active);
+  const nuocsucmiengBanner = pageImages.find(img => img.position === 'nuocsucmieng_banner' && img.is_active);
+  const sanphamkhacBanner = pageImages.find(img => img.position === 'sanphamkhac_banner' && img.is_active);
+
+  // Get hero content from CMS
+  const heroTitle = settings.hero_title || 'Chuyên gia răng miệng';
+  const heroSubtitle = settings.hero_subtitle || 'Giải pháp chăm sóc răng miệng toàn diện';
+  const heroDescription = settings.hero_description || 'Khám phá bộ sưu tập sản phẩm chăm sóc răng miệng chất lượng cao, giúp bạn có nụ cười khỏe đẹp và tự tin.';
 
   const categories = [
     {
-      name: 'Máy tăm nước',
-      description: 'Làm sạch kẽ răng hiệu quả',
-      image: '/category-water-flosser.jpg',
+      name: settings.category_1_name || 'Máy tăm nước',
+      description: settings.category_1_description || 'Làm sạch kẽ răng hiệu quả',
+      image: tamnuocBanner?.image || '/category-water-flosser.jpg',
       href: '/products?category=water_flosser',
     },
     {
-      name: 'Bàn chải điện',
-      description: 'Làm sạch răng chuyên nghiệp',
-      image: '/category-electric-brush.jpg',
+      name: settings.category_2_name || 'Bàn chải điện',
+      description: settings.category_2_description || 'Làm sạch răng chuyên nghiệp',
+      image: banchaidienBanner?.image || '/category-electric-brush.jpg',
       href: '/products?category=electric_brush',
     },
     {
-      name: 'Nước súc miệng',
-      description: 'Bảo vệ răng miệng toàn diện',
-      image: '/category-mouthwash.jpg',
+      name: settings.category_3_name || 'Nước súc miệng',
+      description: settings.category_3_description || 'Bảo vệ răng miệng toàn diện',
+      image: nuocsucmiengBanner?.image || '/category-mouthwash.jpg',
       href: '/products?category=mouthwash',
+    },
+    {
+      name: settings.category_4_name || 'Sản phẩm khác',
+      description: settings.category_4_description || 'Khám phá thêm các sản phẩm khác',
+      image: sanphamkhacBanner?.image || '/category-other.jpg',
+      href: '/products?category=other',
     },
   ];
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-[#0077B6] to-[#005a8b] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Chuyên gia răng miệng
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-100">
-                Giải pháp chăm sóc răng miệng toàn diện
-              </p>
-              <p className="text-lg text-blue-200">
-                Khám phá bộ sưu tập sản phẩm chăm sóc răng miệng chất lượng cao, 
-                giúp bạn có nụ cười khỏe đẹp và tự tin.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/products"
-                  className="bg-white text-[#0077B6] px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center space-x-2"
-                >
-                  <span>Khám phá sản phẩm</span>
-                  <ArrowRight size={20} />
-                </Link>
-                <Link
-                  href="/about"
-                  className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-[#0077B6] transition-colors duration-200"
-                >
-                  Tìm hiểu thêm
-                </Link>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="aspect-square bg-white/10 rounded-3xl p-8 backdrop-blur-sm">
-                <Image
-                  src="http://localhost:8000/media/logo.jpg"
-                  alt="Chăm sóc răng miệng"
-                  fill
-                  className="object-cover rounded-2xl"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+      {/* Horizontal Hero Slider */}
+      {heroImages.length > 0 ? (
+        <HorizontalHeroSlider
+          images={heroImages}
+          settings={settings}
+        />
+      ) : (
+        <section className="relative w-full h-[600px] md:h-[700px] bg-gradient-to-r from-[#0077B6] to-[#005a8b] text-white overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div className="h-full flex flex-col justify-center items-start md:items-center text-white">
+              <div className="max-w-3xl space-y-6 md:text-center">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                  {heroTitle}
+                </h1>
+                <p className="text-xl md:text-3xl font-semibold text-blue-100">
+                  {heroSubtitle}
+                </p>
+                <p className="text-lg md:text-xl text-blue-50 max-w-2xl mx-auto">
+                  {heroDescription}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <Link
+                    href="/products"
+                    className="bg-white text-[#0077B6] px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg"
+                  >
+                    <span>Khám phá sản phẩm</span>
+                    <ArrowRight size={20} />
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-[#0077B6] transition-colors duration-200 shadow-lg"
+                  >
+                    Tìm hiểu thêm
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
@@ -147,7 +169,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category, index) => (
               <Link
                 key={index}
@@ -156,7 +178,7 @@ export default function HomePage() {
               >
                 <div className="relative aspect-video overflow-hidden">
                   <Image
-                    src={category.image}
+                    src={category.image.startsWith('/') ? category.image : getImageUrl(category.image)}
                     alt={category.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -164,6 +186,7 @@ export default function HomePage() {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                     }}
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300" />
                   <div className="absolute inset-0 flex items-center justify-center">

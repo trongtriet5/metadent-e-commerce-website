@@ -27,6 +27,29 @@ export const productsApi = {
     const response = await api.get(`/products/category/${category}/`);
     return response.data;
   },
+
+  // Admin endpoints
+  create: async (formData: FormData): Promise<Product> => {
+    const response = await axios.post(`${API_BASE_URL}/products/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  update: async (id: number, formData: FormData): Promise<Product> => {
+    const response = await axios.put(`${API_BASE_URL}/products/${id}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/products/${id}/`);
+  },
 };
 
 // Cart API - Simplified for local storage
